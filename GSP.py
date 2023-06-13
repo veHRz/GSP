@@ -1,6 +1,9 @@
-import typing as t
 import hashlib, base64
+from functools import lru_cache
+
 good_sizes_for_password = [45, 31, 21, 15]
+
+@lru_cache
 def toSha256(__string: str, __convert_return_to_string : bool = False) -> bytes | str:
     """
     This function encrypt with the sha256 algorithm the string give in parameters.
@@ -12,6 +15,7 @@ def toSha256(__string: str, __convert_return_to_string : bool = False) -> bytes 
         return hashlib.sha256(__string.encode('utf-8')).hexdigest()
     return hashlib.sha256(__string.encode('utf-8')).hexdigest().encode('utf-8')
 
+@lru_cache
 def toBase64(__bytes : bytes, __convert_return_to_string : bool = False) -> bytes | str:
     """
     This function encrypt in base64 the bytes object give in parameters.
@@ -23,6 +27,7 @@ def toBase64(__bytes : bytes, __convert_return_to_string : bool = False) -> byte
         return base64.b64encode(__bytes).decode('utf-8')
     return base64.b64encode(__bytes)
 
+@lru_cache
 def halfOfString(__string: str) -> str:
     """
     This function returns the even half of the characters of the string passed as parameter.
@@ -39,7 +44,8 @@ def halfOfString(__string: str) -> str:
             __pair = True
     return __new_string
 
-def createPassword(__password : str, __login : str, __site : str, __size_of_password : t.Literal[45, 31, 21, 15] = 45) -> str:
+@lru_cache
+def createPassword(__password : str, __login : str, __site : str, __size_of_password : int = 45) -> str:
     """
     With this function you can create strong passwords that are encrypted using sha256 and base64 algorithms combine with a password, a login and a website that you give in the parameters.
     :param __password: Your main password.
